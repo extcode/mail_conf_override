@@ -1,0 +1,86 @@
+{
+    "name": "extcode/mail-conf-override",
+    "type": "typo3-cms-extension",
+    "description": "The extension allows different mail configurations for mail from addresses.",
+    "homepage": "https://www.extco.de",
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "keywords": [
+        "TYPO3 CMS",
+        "Mail",
+        "Configuration",
+        "Override",
+        "SMTP"
+    ],
+    "authors": [
+        {
+            "name": "Daniel Gohlke",
+            "email": "ext@extco.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/extcode/multi-smtp/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "Extcode\\MailConfOverride\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Extcode\\MailConfOverride\\Tests\\": "Tests"
+        }
+    },
+    "config": {
+        "bin-dir": ".build/bin",
+        "discard-changes": true,
+        "optimize-autoloader": true,
+        "vendor-dir": ".build/vendor"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "mail_conf_override",
+            "app-dir": ".build",
+            "web-dir": ".build/public"
+        }
+    },
+    "scripts": {
+        "extcode:cgl": [
+            ".build/bin/php-cs-fixer fix --config=Build/.php_cs.dist -v --using-cache=no --path-mode=intersection ./"
+        ],
+        "extcode:test:php:lint": [
+            ".build/bin/phplint -c Build/phplint.yaml"
+        ],
+        "extcode:test:php:unit": [
+            ".build/bin/phpunit -c Build/UnitTests.xml"
+        ],
+        "extcode:test:php:functional": [
+            "typo3DatabaseDriver=\"pdo_sqlite\" .build/bin/phpunit -c Build/FunctionalTests.xml"
+        ],
+        "extcode:test:typoscript:lint": [
+            ".build/bin/typoscript-lint -c Build/typoscriptlint.yaml Configuration"
+        ],
+        "extcode:test": [
+            "@extcode:test:typoscript:lint",
+            "@extcode:test:php:lint",
+            "@extcode:test:php:unit",
+            "@extcode:test:php:functional"
+        ],
+        "post-autoload-dump": [
+            "mkdir -p .build/public/typo3conf/ext/",
+            "[ -L .build/public/typo3conf/ext/mail_conf_override ] || ln -snvf ../../../../. .build/public/typo3conf/ext/mail_conf_override"
+        ]
+    },
+    "require": {
+        "php": ">=7.2.0 <7.5",
+        "typo3/cms-core": "^9.5"
+    },
+    "require-dev": {
+        "typo3/testing-framework": "^4.0",
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "helmich/typo3-typoscript-lint": "^2.0",
+        "overtrue/phplint": "^1.1"
+    }
+}
