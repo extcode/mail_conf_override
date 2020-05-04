@@ -11,7 +11,6 @@ namespace Extcode\MailConfOverride\Mail;
 
 use TYPO3\CMS\Core\Mail\TransportFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MailUtility;
 
 class MailMessage extends \TYPO3\CMS\Core\Mail\MailMessage
 {
@@ -28,24 +27,21 @@ class MailMessage extends \TYPO3\CMS\Core\Mail\MailMessage
     /**
      * Sends the message.
      *
-     * @return int the number of recipients who were accepted for delivery
+     * This is a short-hand method. It is however more useful to create
+     * a Mailer instance which can be used via Mailer->send($message);
+     *
+     * @return bool whether the message was accepted or not
      */
-    public function send()
+    public function send(): bool
     {
-        // Ensure to always have a From: header set
-        if (empty($this->getFrom())) {
-            $this->setFrom(MailUtility::getSystemFrom());
-        }
-        if (empty($this->getReplyTo())) {
-            $replyTo = MailUtility::getSystemReplyTo();
-            if (!empty($replyTo)) {
-                $this->setReplyTo($replyTo);
-            }
-        }
         $this->initializeMailer();
-        $this->sent = true;
-        $this->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);
-        return $this->mailer->send($this, $this->failedRecipients);
+        $this->sent = false;
+        $this->mailer->send($this);
+        $sentMessage = $this->mailer->getSentMessage();
+        if ($sentMessage) {
+            $this->sent = true;
+        }
+        return $this->sent;
     }
 
     /**
@@ -69,7 +65,9 @@ class MailMessage extends \TYPO3\CMS\Core\Mail\MailMessage
      */
     public function injectMailSettings(array $mailSettings = null)
     {
-        $from = array_keys($this->getFrom())[0];
+        if (is_array($this->getFrom()) && ($this->getFrom()[0] instanceof \Symfony\Component\Mime\Address)) {
+            $from = $this->getFrom()[0]->getAddress();
+        }
         if (is_array($mailSettings)) {
             $this->mailSettings = $mailSettings;
         } elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['MAIL']['overrides'][$from])) {
