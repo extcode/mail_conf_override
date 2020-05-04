@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
         backupGlobals="true"
+        backupStaticAttributes="false"
         bootstrap="../.build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php"
         colors="true"
         convertErrorsToExceptions="true"
         convertWarningsToExceptions="true"
         forceCoversAnnotation="false"
+        processIsolation="true"
         stopOnError="false"
         stopOnFailure="false"
         stopOnIncomplete="false"

@@ -13,6 +13,7 @@
         stopOnIncomplete="false"
         stopOnSkipped="false"
         verbose="false"
+        beStrictAboutTestsThatDoNotTestAnything="false"
 >
     <testsuites>
         <testsuite name="Mail Conf Override Extension">

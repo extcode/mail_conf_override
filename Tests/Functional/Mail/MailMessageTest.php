@@ -70,7 +70,7 @@ class MailMessageTest extends FunctionalTestCase
         ],
     ];
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -78,7 +78,7 @@ class MailMessageTest extends FunctionalTestCase
         $this->mailMessage = $this->objectManager->get(MailMessage::class);
     }
 
-    public function tearDown(): void
+    public function tearDown()
     {
         unset($this->objectManager);
     }
