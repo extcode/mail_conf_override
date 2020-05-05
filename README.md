@@ -20,6 +20,7 @@ Please have a look into the [official extension documentation in install chapter
 | ------------- | ---------- | ----------|---------------------------------------- |
 | 3.x.x         | 10.4       | 7.2 - 7.4 | Features, Bugfixes, Security Updates    |
 | 2.x.x         | 9.5        | 7.2 - 7.4 | Features, Bugfixes, Security Updates    |
+| 1.x.x         | 8.7        | 7.0 - 7.4 | Bugfixes, Security Updates              |
 
 ### 3.2. Changelog
 
